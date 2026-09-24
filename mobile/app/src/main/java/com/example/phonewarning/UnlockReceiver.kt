@@ -15,26 +15,30 @@ class UnlockReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("PhoneWarning", "Broadcast received: ${intent.action}")
 
-        if (intent.action == Intent.ACTION_SCREEN_ON) {
-            Log.d("PhoneWarning", "💡 SCREEN ON")
+        val prefs = context.getSharedPreferences("PhoneWarningPrefs", Context.MODE_PRIVATE)
+        val serverAddress = prefs.getString("server_address", "") ?: ""
+
+        if (serverAddress.isBlank()) {
+            Log.w("PhoneWarning", "⚠️ No laptop server address configured.")
+            return
         }
 
-        if (intent.action == Intent.ACTION_USER_PRESENT) {
-            Log.d("PhoneWarning", "📱 PHONE UNLOCKED! Sending signal to laptop...")
-
-            val prefs = context.getSharedPreferences("PhoneWarningPrefs", Context.MODE_PRIVATE)
-            val serverAddress = prefs.getString("server_address", "") ?: ""
-
-            if (serverAddress.isBlank()) {
-                Log.w("PhoneWarning", "⚠️ No laptop server address configured. Open the app to set IP.")
-                return
+        when (intent.action) {
+            Intent.ACTION_SCREEN_ON -> {
+                Log.d("PhoneWarning", "💡 SCREEN ON")
             }
-
-            sendUnlockNotification(serverAddress)
+            Intent.ACTION_USER_PRESENT -> {
+                Log.d("PhoneWarning", "📱 PHONE UNLOCKED! Starting alert on laptop...")
+                sendNotification(serverAddress, "phone/unlocked")
+            }
+            Intent.ACTION_SCREEN_OFF -> {
+                Log.d("PhoneWarning", "🔒 PHONE LOCKED! Stopping alert on laptop...")
+                sendNotification(serverAddress, "phone/locked")
+            }
         }
     }
 
-    private fun sendUnlockNotification(address: String) {
+    private fun sendNotification(address: String, endpoint: String) {
         thread {
             try {
                 val formattedAddress = if (address.startsWith("http://") || address.startsWith("https://")) {
@@ -43,11 +47,13 @@ class UnlockReceiver : BroadcastReceiver() {
                     "http://$address"
                 }
 
-                val fullUrl = if (formattedAddress.endsWith("/")) {
-                    "${formattedAddress}phone/unlocked"
+                val trimmedAddress = if (formattedAddress.endsWith("/")) {
+                    formattedAddress
                 } else {
-                    "$formattedAddress/phone/unlocked"
+                    "$formattedAddress/"
                 }
+
+                val fullUrl = "$trimmedAddress$endpoint"
 
                 Log.d("PhoneWarning", "Connecting to $fullUrl...")
                 val url = URL(fullUrl)
@@ -61,13 +67,13 @@ class UnlockReceiver : BroadcastReceiver() {
                     val reader = BufferedReader(InputStreamReader(conn.inputStream))
                     val response = reader.readText()
                     reader.close()
-                    Log.d("PhoneWarning", "✅ Successfully notified laptop! Server response: ${response.trim()}")
+                    Log.d("PhoneWarning", "✅ Success ($endpoint): ${response.trim()}")
                 } else {
-                    Log.e("PhoneWarning", "❌ Server returned error code: $responseCode")
+                    Log.e("PhoneWarning", "❌ Server returned code: $responseCode")
                 }
                 conn.disconnect()
             } catch (e: Exception) {
-                Log.e("PhoneWarning", "❌ Failed to connect to laptop server: ${e.message}")
+                Log.e("PhoneWarning", "❌ Connection failed ($endpoint): ${e.message}")
             }
         }
     }

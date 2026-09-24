@@ -1,0 +1,556 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+PS C:\Users\soham> cd E:
+PS E:\> cd .\Programs\mini-projects\no-phone\
+PS E:\Programs\mini-projects\no-phone> mkdir mobile
+
+
+    Directory: E:\Programs\mini-projects\no-phone
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                mobile
+
+
+PS E:\Programs\mini-projects\no-phone> cd .\mobile\
+PS E:\Programs\mini-projects\no-phone\mobile> ls
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                app
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                src
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                main
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\java
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                java
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\java\com
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main\java
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                com
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\java\com\example
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main\java\com
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                example
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\java\com\example\phonewarning
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main\java\com\example
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:01                phonewarning
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\res
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:02                res
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> code settings.gradle.kts
+PS E:\Programs\mini-projects\no-phone\mobile> code build.gradle.kts
+PS E:\Programs\mini-projects\no-phone\mobile> code gradle.properties
+PS E:\Programs\mini-projects\no-phone\mobile> code app\build.gradle.kts
+PS E:\Programs\mini-projects\no-phone\mobile> code app\src\main\AndroidManifest.xml
+PS E:\Programs\mini-projects\no-phone\mobile> code app\src\main\java\com\example\phonewarning\MainActivity.kt
+PS E:\Programs\mini-projects\no-phone\mobile> code app\src\main\java\com\example\phonewarning\UnlockReceiver.kt
+PS E:\Programs\mini-projects\no-phone\mobile> mkdir app\src\main\res\values
+
+
+    Directory: E:\Programs\mini-projects\no-phone\mobile\app\src\main\res
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        24-09-2026     02:05                values
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> code app\src\main\res\values\styles.xml
+PS E:\Programs\mini-projects\no-phone\mobile> Get-ChildItem "$env:USERPROFILE\.gradle\wrapper\dists" -ErrorAction SilentlyContinue
+
+
+    Directory: C:\Users\soham\.gradle\wrapper\dists
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----        30-04-2026     11:31                gradle-8.13-bin
+d-----        04-05-2026     22:26                gradle-8.9-bin
+d-----        13-04-2026     14:26                gradle-9.1.0-bin
+d-----        25-08-2026     22:04                gradle-9.2.0-bin
+d-----        04-09-2026     22:43                gradle-9.4.1-bin
+-a----        11-04-2026     13:03            181 CACHEDIR.TAG
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> Get-ChildItem "C:\Program Files\Gradle" -ErrorAction SilentlyContinue
+PS E:\Programs\mini-projects\no-phone\mobile> Get-ChildItem "E:\Programs" -Directory | Where-Object { $_.Name -like "*gradle*" }
+PS E:\Programs\mini-projects\no-phone\mobile> Get-ChildItem "$env:USERPROFILE\.gradle\wrapper\dists\gradle-8.13-bin" -Recurse -Filter gradle.bat
+
+
+    Directory: C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13\bin
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        30-04-2026     11:32           3037 gradle.bat
+
+
+PS E:\Programs\mini-projects\no-phone\mobile> & "C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13\bin" wrapper --gradle-version 8.13
+& : The term 'C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13\bin' is not
+recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if
+a path was included, verify that the path is correct and try again.
+At line:1 char:3
++ & "C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q4 ...
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (C:\Users\soham\...gradle-8.13\bin:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS E:\Programs\mini-projects\no-phone\mobile> & "C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13\bin\gradle.bat" wrapper --gradle-version 8.13
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by net.rubygrapefruit.platform.internal.NativeLibraryLoader in an unnamed module (file:/C:/Users/soham/.gradle/wrapper/dists/gradle-8.13-bin/5xuhj0ry160q40clulazy9h7d/gradle-8.13/lib/native-platform-0.22-milestone-28.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+Starting a Gradle Daemon, 4 incompatible and 1 stopped Daemons could not be reused, use --status for details
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+25.0.2
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 3s
+PS E:\Programs\mini-projects\no-phone\mobile> $env:JAVA_HOME="E:\Java\JDK17"
+PS E:\Programs\mini-projects\no-phone\mobile> $env:Path="E:\Java\JDK17\bin;$env:Path"
+PS E:\Programs\mini-projects\no-phone\mobile> & "C:\Users\soham\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13\bin\gradle.bat" wrapper --gradle-version 8.13
+Starting a Gradle Daemon, 4 incompatible and 1 stopped Daemons could not be reused, use --status for details
+
+BUILD SUCCESSFUL in 51s
+1 actionable task: 1 executed
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat --version
+
+------------------------------------------------------------
+Gradle 8.13
+------------------------------------------------------------
+
+Build time:    2025-02-25 09:22:14 UTC
+Revision:      073314332697ba45c16c0a0ce1891fa6794179ff
+
+Kotlin:        2.0.21
+Groovy:        3.0.22
+Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+Launcher JVM:  17.0.18 (Eclipse Adoptium 17.0.18+8)
+Daemon JVM:    E:\Java\JDK17 (no JDK specified, using current Java home)
+OS:            Windows 11 10.0 amd64
+
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+> Task :app:compileDebugKotlin FAILED
+
+[Incubating] Problems report is available at: file:///E:/Programs/mini-projects/no-phone/mobile/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> Inconsistent JVM Target Compatibility Between Java and Kotlin Tasks
+  Inconsistent JVM-target compatibility detected for tasks 'compileDebugJavaWithJavac' (1.8) and 'compileDebugKotlin' (17).
+  Solution: Consider using JVM Toolchain: https://kotl.in/gradle/jvm/toolchain
+  Learn more about JVM-target validation: https://kotl.in/gradle/jvm/target-validation
+    Inconsistent JVM Target Compatibility Between Java and Kotlin Tasks
+      Inconsistent JVM-target compatibility detected for tasks 'compileDebugJavaWithJavac' (1.8) and 'compileDebugKotlin' (17).
+
+* Try:
+> Consider using JVM Toolchain: https://kotl.in/gradle/jvm/toolchain
+> Run with --scan to get full insights.
+
+BUILD FAILED in 35s
+26 actionable tasks: 26 executed
+PS E:\Programs\mini-projects\no-phone\mobile> code .
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 11s
+35 actionable tasks: 11 executed, 24 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb devices
+* daemon not running; starting now at tcp:5037
+* daemon started successfully
+List of devices attached
+
+PS E:\Programs\mini-projects\no-phone\mobile> adb devices
+List of devices attached
+
+PS E:\Programs\mini-projects\no-phone\mobile> adb devices
+List of devices attached
+5a891e9d        device
+
+PS E:\Programs\mini-projects\no-phone\mobile> adb devices
+List of devices attached
+5a891e9d        device
+
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -s PhoneWarning:D
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -s PhoneWarning:D
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat "PhoneWarning:D" "*:S"
+PS E:\Programs\mini-projects\no-phone\mobile> adb shell dumpsys package com.example.phonewarning
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        62a2127 com.example.phonewarning/.MainActivity filter 1342fd4
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        e8da8c3 com.example.phonewarning/androidx.profileinstaller.ProfileInstallReceiver filter 52adbe
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        e8da8c3 com.example.phonewarning/androidx.profileinstaller.ProfileInstallReceiver filter 58e7540
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      androidx.profileinstaller.action.SKIP_FILE:
+        e8da8c3 com.example.phonewarning/androidx.profileinstaller.ProfileInstallReceiver filter 4e19c79
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      androidx.profileinstaller.action.BENCHMARK_OPERATION:
+        e8da8c3 com.example.phonewarning/androidx.profileinstaller.ProfileInstallReceiver filter 3180e1f
+          Action: "androidx.profileinstaller.action.BENCHMARK_OPERATION"
+      android.intent.action.USER_PRESENT:
+        bc3257d com.example.phonewarning/.UnlockReceiver filter 3313c72
+          Action: "android.intent.action.USER_PRESENT"
+
+Domain verification status:
+
+Permissions:
+  Permission [com.example.phonewarning.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (32032af):
+    sourcePackage=com.example.phonewarning
+    uid=10229 gids=[] type=0 prot=signature
+    perm=PermissionInfo{68116bc com.example.phonewarning.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    flags=0x0
+
+Registered ContentProviders:
+  com.example.phonewarning/androidx.startup.InitializationProvider:
+    Provider{b4c2645 com.example.phonewarning/androidx.startup.InitializationProvider}
+
+ContentProvider Authorities:
+  [com.example.phonewarning.androidx-startup]:
+    Provider{b4c2645 com.example.phonewarning/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{173819a com.example.phonewarning}
+
+Key Set Manager:
+  [com.example.phonewarning]
+      Signing KeySets: 1487
+
+Packages:
+  Package [com.example.phonewarning] (6c74acb):
+    appId=10229
+    pkg=Package{fa6e2a8 com.example.phonewarning}
+    codePath=/data/app/~~suzswBAD7BI14SDiHUk_oQ==/com.example.phonewarning-3Gm5NectuJlsXSns2aeD8w==
+    resourcePath=/data/app/~~suzswBAD7BI14SDiHUk_oQ==/com.example.phonewarning-3Gm5NectuJlsXSns2aeD8w==
+    legacyNativeLibraryDir=/data/app/~~suzswBAD7BI14SDiHUk_oQ==/com.example.phonewarning-3Gm5NectuJlsXSns2aeD8w==/lib
+    extractNativeLibs=false
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=1 minSdk=26 targetSdk=36
+    minExtensionVersions=[]
+    versionName=1.0
+    usesNonSdkApi=false
+    isMiuiPreinstall=false
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    dataDir=/data/user/0/com.example.phonewarning
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2026-09-24 02:19:22
+    lastUpdateTime=2026-09-24 02:19:32
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=com.android.shell
+    originatingPackageName=null
+    packageSource=1
+    appMetadataFilePath=null
+    signatures=PackageSignatures{90de1c1 version:2, signatures:[c4e7b054], past signatures:[]}
+    installPermissionsFixed=true
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    apexModuleName=null
+    declared permissions:
+      com.example.phonewarning.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+    requested permissions:
+      com.example.phonewarning.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+    install permissions:
+      com.example.phonewarning.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+    User 0: ceDataInode=2181877 installed=true hidden=false suspended=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false
+      installReason=0
+      firstInstallTime=2026-09-24 02:19:32
+      uninstallReason=0
+      overlay paths:
+        /product/overlay/GestureLineOverlay.apk
+        /data/resource-cache/com.android.systemui-neutral-u0xI.frro
+        /data/resource-cache/com.android.systemui-accent-84Sz.frro
+        /data/resource-cache/com.android.systemui-dynamic-XbVv.frro
+      legacy overlay paths:
+        /product/overlay/GestureLineOverlay.apk
+      runtime permissions:
+
+Queries:
+  system apps queryable: false
+  queries via forceQueryable:
+  queries via package name:
+  queries via component:
+    com.android.thememanager:
+      com.example.phonewarning
+    com.miui.gallery:
+      com.example.phonewarning
+    com.miui.weather2:
+      com.example.phonewarning
+    com.xiaomi.midrop:
+      com.example.phonewarning
+    com.miui.player:
+      com.example.phonewarning
+    com.xiaomi.calendar:
+      com.example.phonewarning
+    com.xiaomi.account:
+      com.example.phonewarning
+    com.miui.msa.global:
+      com.example.phonewarning
+    com.miui.global.packageinstaller:
+      com.example.phonewarning
+    com.xiaomi.glgm:
+      com.example.phonewarning
+    com.instagram.android:
+      com.example.phonewarning
+    ru.zdevs.zarchiver:
+      com.example.phonewarning
+    com.android.settings.intelligence:
+      com.example.phonewarning
+    com.mi.globalminusscreen:
+      com.example.phonewarning
+    com.facemoji.lite.xiaomi:
+      com.example.phonewarning
+    com.whatsapp:
+      com.example.phonewarning
+    com.easybrain.arrow.puzzle.game:
+      com.example.phonewarning
+    com.voodoo.almanac:
+      com.example.phonewarning
+    com.connect.enduser:
+      com.example.phonewarning
+    com.infrasoft.uboi:
+      com.example.phonewarning
+    com.digilocker.android:
+      com.example.phonewarning
+    in.amazon.mShop.android.shopping:
+      com.example.phonewarning
+    com.amazon.kindle:
+      com.example.phonewarning
+    com.truecaller:
+      com.example.phonewarning
+    com.mventus.selfcare.activity:
+      com.example.phonewarning
+    com.bt.bms:
+      com.example.phonewarning
+    in.startv.hotstar:
+      com.example.phonewarning
+    com.duokan.phone.remotecontroller:
+      com.example.phonewarning
+    us.zoom.videomeetings:
+      com.example.phonewarning
+    com.myinsta.android:
+      com.example.phonewarning
+    com.snapchat.android:
+      com.example.phonewarning
+    com.vincentb.MobControl:
+      com.example.phonewarning
+  queryable via interaction:
+    User 0:
+      [com.android.settings,com.android.server.telecom,com.android.inputdevices,com.miui.qr,com.qualcomm.qti.xrvd.service,com.xiaomi.joyose,com.miui.securitycore,com.miui.aod,com.android.localtransport,com.android.dynsystem,com.xiaomi.misettings,com.miui.securitycenter,com.xiaomi.trustservice,com.xiaomi.devauth,com.miui.cit,com.bsp.catchlog,com.xiaomi.mirror,com.miui.screenrecorder,com.android.provision,com.miui.daemon,com.xiaomi.mi_connect_service,com.android.providers.settings,com.xiaomi.barrage,com.miui.notification,com.miui.face,vendor.qti.qesdk.sysservice,com.miui.touchassistant,android,com.xiaomi.mtb,com.miui.powerkeeper,com.android.wallpaperbackup,com.android.keychain,com.miui.freeform,miui.systemui.plugin,com.android.location.fused,com.miui.audiomonitor,com.miui.bugreport,com.android.systemui]:
+        com.example.phonewarning
+      com.google.android.inputmethod.latin:
+        com.example.phonewarning
+  queryable via uses-library:
+
+Dexopt state:
+  [com.example.phonewarning]
+    path: /data/app/~~suzswBAD7BI14SDiHUk_oQ==/com.example.phonewarning-3Gm5NectuJlsXSns2aeD8w==/base.apk
+      arm64: [status=verify] [reason=first-use] [primary-abi]
+        [location is /data/app/~~suzswBAD7BI14SDiHUk_oQ==/com.example.phonewarning-3Gm5NectuJlsXSns2aeD8w==/oat/arm64/base.odex]
+    base APK odex file size: base.odex: 48Kb base.vdex: 6395Kb
+
+Compiler stats:
+  [com.example.phonewarning]
+     base.apk - 311
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 2s
+35 actionable tasks: 4 executed, 31 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat "PhoneWarning:D" "*:S"
+PS E:\Programs\mini-projects\no-phone\mobile> adb shell am broadcast -a android.intent.action.USER_PRESENT
+Broadcasting: Intent { act=android.intent.action.USER_PRESENT flg=0x400000 }
+
+Exception occurred while executing 'broadcast':
+java.lang.SecurityException: Permission Denial: not allowed to send broadcast android.intent.action.USER_PRESENT from pid=1719, uid=2000
+        at com.android.server.am.ActivityManagerService.broadcastIntentLockedTraced(ActivityManagerService.java:15378)
+        at com.android.server.am.ActivityManagerService.broadcastIntentLocked(ActivityManagerService.java:15171)
+        at com.android.server.am.ActivityManagerService.broadcastIntentWithFeature(ActivityManagerService.java:16149)
+        at com.android.server.am.ActivityManagerShellCommand.runSendBroadcast(ActivityManagerShellCommand.java:982)
+        at com.android.server.am.ActivityManagerShellCommand.onCommand(ActivityManagerShellCommand.java:266)
+        at com.android.modules.utils.BasicShellCommandHandler.exec(BasicShellCommandHandler.java:97)
+        at android.os.ShellCommand.exec(ShellCommand.java:38)
+        at com.android.server.am.ActivityManagerService.onShellCommand(ActivityManagerService.java:10275)
+        at android.os.Binder.shellCommand(Binder.java:1075)
+        at android.os.Binder.onTransact(Binder.java:895)
+        at android.app.IActivityManager$Stub.onTransact(IActivityManager.java:5786)
+        at com.android.server.am.ActivityManagerService.onTransact(ActivityManagerService.java:2868)
+        at android.os.Binder.execTransactInternal(Binder.java:1351)
+        at android.os.Binder.execTransact(Binder.java:1282)
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 2s
+35 actionable tasks: 8 executed, 27 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat "PhoneWarning:D" "*:S"
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 2s
+35 actionable tasks: 8 executed, 27 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> adb shell dumpsys package com.example.phonewarning | findstr /i "SCREEN_ON USER_PRESENT"
+      android.intent.action.SCREEN_ON:
+          Action: "android.intent.action.SCREEN_ON"
+          Action: "android.intent.action.USER_PRESENT"
+      android.intent.action.USER_PRESENT:
+          Action: "android.intent.action.SCREEN_ON"
+          Action: "android.intent.action.USER_PRESENT"
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat "PhoneWarning:D" "*:S"
+PS E:\Programs\mini-projects\no-phone\mobile> antigravity-ide ..
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 3s
+35 actionable tasks: 8 executed, 27 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 930ms
+35 actionable tasks: 35 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c && adb logcat "PhoneWarning:D" "*:S"
+At line:1 char:15
++ adb logcat -c && adb logcat "PhoneWarning:D" "*:S"
++               ~~
+The token '&&' is not a valid statement separator in this version.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvalidEndOfLine
+
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat -c
+PS E:\Programs\mini-projects\no-phone\mobile> adb logcat "PhoneWarning:D" "*:S"
+--------- beginning of main
+09-24 02:41:18.049  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_ON
+09-24 02:41:18.049  2201  2201 D PhoneWarning: 💡 SCREEN ON
+09-24 02:41:22.304  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.USER_PRESENT
+09-24 02:41:22.304  2201  2201 D PhoneWarning: 📱 PHONE UNLOCKED!
+09-24 02:41:32.317  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_OFF
+09-24 02:41:34.610  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_ON
+09-24 02:41:34.611  2201  2201 D PhoneWarning: 💡 SCREEN ON
+09-24 02:41:36.926  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.USER_PRESENT
+09-24 02:41:36.927  2201  2201 D PhoneWarning: 📱 PHONE UNLOCKED!
+09-24 02:41:42.706  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_OFF
+09-24 02:42:11.838  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_ON
+09-24 02:42:11.838  2201  2201 D PhoneWarning: 💡 SCREEN ON
+09-24 02:42:11.842  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.USER_PRESENT
+09-24 02:42:11.843  2201  2201 D PhoneWarning: 📱 PHONE UNLOCKED!
+09-24 02:43:00.955  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_OFF
+09-24 02:43:04.363  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_ON
+09-24 02:43:04.363  2201  2201 D PhoneWarning: 💡 SCREEN ON
+09-24 02:43:06.139  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.USER_PRESENT
+09-24 02:43:06.139  2201  2201 D PhoneWarning: 📱 PHONE UNLOCKED!
+09-24 02:43:08.725  2201  2201 D PhoneWarning: Broadcast received: android.intent.action.SCREEN_OFF
+PS E:\Programs\mini-projects\no-phone\mobile> .\gradlew.bat assembleDebug
+
+BUILD SUCCESSFUL in 3s
+35 actionable tasks: 14 executed, 21 up-to-date
+PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+Performing Streamed Install
+Success
+PS E:\Programs\mini-projects\no-phone\mobile>

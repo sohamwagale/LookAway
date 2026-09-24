@@ -11,6 +11,8 @@
 /bin/
 /dist/
 no-phone
+.gocache/
+*.syso
 
 # ====================================================================
 # Android / Gradle Artifacts
