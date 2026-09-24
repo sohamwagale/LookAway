@@ -554,3 +554,8 @@ PS E:\Programs\mini-projects\no-phone\mobile> adb install -r .\app\build\outputs
 Performing Streamed Install
 Success
 PS E:\Programs\mini-projects\no-phone\mobile>
+
+
+
+
+go build -buildvcs=false -ldflags "-H=windowsgui" -o LookAway.exe .

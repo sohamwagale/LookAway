@@ -480,20 +480,30 @@ func main() {
 }
 
 func onSystrayReady() {
-	systray.SetIcon(getAppIconICO())
+	icon := getAppIconICO()
+	systray.SetIcon(icon)
 	systray.SetTitle("LookAway")
 	systray.SetTooltip("LookAway - Phone Distraction Blocker")
 
-	mStatus := systray.AddMenuItem("🟢 LookAway Active (:8080)", "LookAway server is running")
+	// On boot, Explorer's tray may not be ready yet.
+	// Retry SetIcon a few times to ensure it registers.
+	go func() {
+		for i := 0; i < 10; i++ {
+			time.Sleep(2 * time.Second)
+			systray.SetIcon(icon)
+		}
+	}()
+
+	mStatus := systray.AddMenuItem("LookAway Active (:8080)", "LookAway server is running")
 	mStatus.Disable()
 
 	systray.AddSeparator()
 
-	mOpen := systray.AddMenuItem("🌐 Open Dashboard", "Open analytics dashboard in browser")
+	mOpen := systray.AddMenuItem("Open Dashboard", "Open analytics dashboard in browser")
 
 	systray.AddSeparator()
 
-	mQuit := systray.AddMenuItem("❌ Exit LookAway", "Stop server and quit application")
+	mQuit := systray.AddMenuItem("Exit LookAway", "Stop server and quit application")
 
 	go func() {
 		for {
@@ -517,307 +527,212 @@ const dashboardHTML = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhoneWarning • Focus Analytics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <title>LookAway — Focus Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --bg: #0d0f17;
-            --card-bg: rgba(22, 27, 46, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-green: #00f59b;
-            --accent-red: #ff3860;
-            --accent-purple: #9d4edd;
-            --accent-blue: #00b4d8;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
+            --bg: #ffffff;
+            --surface: #fafafa;
+            --border: #e5e5e5;
+            --text: #0a0a0a;
+            --text-secondary: #525252;
+            --text-tertiary: #a3a3a3;
+            --accent: #0a0a0a;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Outfit', sans-serif;
-        }
-
         body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(157, 78, 221, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(0, 245, 155, 0.1) 0%, transparent 40%);
-            color: var(--text-primary);
+            color: var(--text);
             min-height: 100vh;
-            padding: 32px 20px;
+            padding: 48px 32px 64px;
+            -webkit-font-smoothing: antialiased;
         }
-
-        .container {
-            max-width: 1080px;
-            margin: 0 auto;
-        }
-
+        .container { max-width: 960px; margin: 0 auto; }
         header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: baseline;
+            padding-bottom: 24px;
             margin-bottom: 32px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--border);
         }
-
-        .logo-group h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
         }
-
-        .logo-group p {
-            color: var(--text-secondary);
-            font-size: 14px;
+        header .subtitle {
+            font-size: 13px;
+            color: var(--text-tertiary);
             margin-top: 4px;
+            font-weight: 400;
         }
-
-        /* Live Status Banner */
+        #liveClock {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-tertiary);
+            font-variant-numeric: tabular-nums;
+        }
         .status-banner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 24px 32px;
-            border-radius: 20px;
-            margin-bottom: 28px;
-            transition: all 0.4s ease;
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
+            padding: 16px 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            background: var(--surface);
+            transition: background 0.15s ease, border-color 0.15s ease;
         }
-
-        .status-banner.locked {
-            background: rgba(0, 245, 155, 0.08);
-            border-color: rgba(0, 245, 155, 0.3);
-            box-shadow: 0 0 30px rgba(0, 245, 155, 0.1);
-        }
-
         .status-banner.unlocked {
-            background: rgba(255, 56, 96, 0.12);
-            border-color: rgba(255, 56, 96, 0.4);
-            box-shadow: 0 0 40px rgba(255, 56, 96, 0.2);
-            animation: pulse-red 2s infinite;
+            background: var(--accent);
+            border-color: var(--accent);
         }
-
-        @keyframes pulse-red {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.008); }
-        }
-
-        .status-left {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .status-dot {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent-green);
-            box-shadow: 0 0 16px var(--accent-green);
-            transition: all 0.3s ease;
-        }
-
-        .status-banner.unlocked .status-dot {
-            background: var(--accent-red);
-            box-shadow: 0 0 20px var(--accent-red);
-        }
-
-        .status-title {
-            font-size: 22px;
-            font-weight: 700;
-        }
-
-        .status-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-
+        .status-banner.unlocked .status-title,
+        .status-banner.unlocked .status-subtitle,
+        .status-banner.unlocked .streak-pill { color: #ffffff !important; }
+        .status-banner.unlocked .status-dot { background: #ffffff; }
+        .status-left { display: flex; align-items: center; gap: 12px; }
+        .status-dot { width: 8px; height: 8px; flex-shrink: 0; background: var(--accent); }
+        .status-title { font-size: 14px; font-weight: 600; letter-spacing: -0.1px; }
+        .status-subtitle { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
         .streak-pill {
-            background: rgba(255, 255, 255, 0.06);
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-size: 15px;
-            font-weight: 600;
-            border: 1px solid var(--card-border);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 24px;
-            backdrop-filter: blur(12px);
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .stat-label {
             font-size: 13px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            font-variant-numeric: tabular-nums;
         }
-
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        .stat-card { background: var(--bg); padding: 20px; }
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
         .stat-val {
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: -0.5px;
-        }
-
-        /* History Table */
-        .history-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 28px;
-            backdrop-filter: blur(12px);
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .history-header h2 {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+        .history-section { border: 1px solid var(--border); }
+        .history-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
         }
-
+        .history-header h2 { font-size: 14px; font-weight: 600; letter-spacing: -0.1px; }
+        table { width: 100%; border-collapse: collapse; }
         th {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--text-secondary);
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--card-border);
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            padding: 10px 20px;
+            text-align: left;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
         }
-
         td {
-            padding: 16px;
-            font-size: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 12px 20px;
+            font-size: 13px;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
         }
-
-        tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .badge-duration {
-            background: rgba(255, 56, 96, 0.15);
-            color: #ff6b8b;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+        tr:last-child td { border-bottom: none; }
+        .cell-id { color: var(--text-tertiary); font-weight: 500; }
+        .cell-time { font-weight: 600; font-variant-numeric: tabular-nums; }
+        .cell-duration {
             display: inline-block;
+            padding: 3px 8px;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
         }
-
+        .cell-status { color: var(--text-tertiary); font-size: 12px; }
         .empty-state {
             text-align: center;
-            padding: 40px;
-            color: var(--text-secondary);
-            font-size: 15px;
+            padding: 48px 20px;
+            color: var(--text-tertiary);
+            font-size: 13px;
+        }
+        @media (max-width: 768px) {
+            body { padding: 24px 16px 40px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .status-banner { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .stat-val { font-size: 24px; }
+            .history-section { overflow-x: auto; }
+            table { min-width: 500px; }
+            #liveClock { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo-group">
-                <h1>🛡️ PhoneWarning Hub</h1>
-                <p>Real-time distraction defense & focus metrics</p>
+            <div>
+                <h1>LookAway</h1>
+                <p class="subtitle">Focus analytics &amp; distraction defense</p>
             </div>
-            <div id="liveClock" style="color: var(--text-secondary); font-size: 14px; font-weight: 600;"></div>
+            <div id="liveClock"></div>
         </header>
-
-        <!-- Live Status Banner -->
         <div id="statusBanner" class="status-banner locked">
             <div class="status-left">
                 <div class="status-dot"></div>
                 <div>
-                    <div id="statusTitle" class="status-title">🟢 Phone Locked</div>
+                    <div id="statusTitle" class="status-title">Phone Locked</div>
                     <div id="statusSubtitle" class="status-subtitle">Focus mode is active. Keep working!</div>
                 </div>
             </div>
-            <div id="streakPill" class="streak-pill">⏱️ Focus Streak: 0s</div>
+            <div id="streakPill" class="streak-pill">Focus Streak: 0s</div>
         </div>
-
-        <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-label">Total Unlocks Today</div>
-                <div id="totalUnlocks" class="stat-val" style="color: var(--accent-purple);">0</div>
+                <div class="stat-label">Unlocks Today</div>
+                <div id="totalUnlocks" class="stat-val">0</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Total Phone Screen Time</div>
-                <div id="totalScreenTime" class="stat-val" style="color: var(--accent-blue);">0s</div>
+                <div class="stat-label">Screen Time</div>
+                <div id="totalScreenTime" class="stat-val">0s</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">Avg Session Duration</div>
-                <div id="avgDuration" class="stat-val" style="color: var(--accent-green);">0s</div>
+                <div class="stat-label">Avg Duration</div>
+                <div id="avgDuration" class="stat-val">0s</div>
             </div>
             <div class="stat-card">
-                <div class="stat-label">10m Unlock Frequency</div>
-                <div id="recentFreq" class="stat-val" style="color: var(--accent-red);">0</div>
+                <div class="stat-label">10m Frequency</div>
+                <div id="recentFreq" class="stat-val">0</div>
             </div>
         </div>
-
-        <!-- History Table -->
-        <div class="history-card">
-            <div class="history-header">
-                <h2>📋 Unlock Sessions Today</h2>
-            </div>
-            <div id="tableContainer">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Time</th>
-                            <th>Session Duration</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sessionBody">
-                        <tr>
-                            <td colspan="4" class="empty-state">No unlock sessions recorded yet today. Keep it up!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="history-section">
+            <div class="history-header"><h2>Session Log</h2></div>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Time</th><th>Duration</th><th>Status</th></tr>
+                </thead>
+                <tbody id="sessionBody">
+                    <tr><td colspan="4" class="empty-state">No unlock sessions recorded today</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
-
     <script>
         function updateClock() {
             var now = new Date();
@@ -825,10 +740,8 @@ const dashboardHTML = `<!DOCTYPE html>
         }
         setInterval(updateClock, 1000);
         updateClock();
-
         var currentStreak = 0;
         var isPhoneUnlocked = false;
-
         function formatDuration(sec) {
             if (sec < 60) return sec + 's';
             var m = Math.floor(sec / 60);
@@ -837,78 +750,60 @@ const dashboardHTML = `<!DOCTYPE html>
             var h = Math.floor(m / 60);
             return h + 'h ' + (m % 60) + 'm';
         }
-
         async function fetchStats() {
             try {
                 var res = await fetch('/api/stats');
                 var data = await res.json();
-                
                 isPhoneUnlocked = data.isUnlocked;
                 currentStreak = data.currentStreakSeconds;
-
-                // Update Status Banner
                 var banner = document.getElementById('statusBanner');
                 var title = document.getElementById('statusTitle');
                 var subtitle = document.getElementById('statusSubtitle');
                 var streakPill = document.getElementById('streakPill');
-
                 if (data.isUnlocked) {
                     banner.className = 'status-banner unlocked';
-                    title.innerText = '🚨 PHONE UNLOCKED!';
-                    subtitle.innerText = 'Warning audio repeating! Lock your phone to resume focus.';
-                    streakPill.innerText = '⚠️ Warning Active';
-                    streakPill.style.color = '#ff3860';
+                    title.innerText = 'Phone Unlocked';
+                    subtitle.innerText = 'Warning active \u2014 lock your phone to resume focus';
+                    streakPill.innerText = 'Warning Active';
                 } else {
                     banner.className = 'status-banner locked';
-                    title.innerText = '🟢 Phone Locked';
+                    title.innerText = 'Phone Locked';
                     subtitle.innerText = 'Focus mode is active. Keep working!';
-                    streakPill.innerText = '⏱️ Focus Streak: ' + formatDuration(currentStreak);
-                    streakPill.style.color = '#00f59b';
+                    streakPill.innerText = 'Focus Streak: ' + formatDuration(currentStreak);
                 }
-
-                // Update Stat Cards
                 document.getElementById('totalUnlocks').innerText = data.totalUnlocksToday;
                 document.getElementById('totalScreenTime').innerText = data.formattedScreenTime;
                 document.getElementById('avgDuration').innerText = data.formattedAvgSession;
                 document.getElementById('recentFreq').innerText = data.recentUnlockFrequency;
-
-                // Update Table
                 var tbody = document.getElementById('sessionBody');
                 if (!data.sessions || data.sessions.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No unlock sessions recorded yet today. Keep it up!</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" class="empty-state">No unlock sessions recorded today</td></tr>';
                 } else {
                     var rowsHtml = '';
                     for (var i = 0; i < data.sessions.length; i++) {
                         var s = data.sessions[i];
                         var timeStr = new Date(s.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                         rowsHtml += '<tr>' +
-                            '<td style="color: var(--text-secondary); font-weight: 600;">#' + s.id + '</td>' +
-                            '<td style="font-weight: 600;">' + timeStr + '</td>' +
-                            '<td><span class="badge-duration">' + s.duration + '</span></td>' +
-                            '<td style="color: #94a3b8;">Completed</td>' +
+                            '<td class="cell-id">' + s.id + '</td>' +
+                            '<td class="cell-time">' + timeStr + '</td>' +
+                            '<td><span class="cell-duration">' + s.duration + '</span></td>' +
+                            '<td class="cell-status">Completed</td>' +
                         '</tr>';
                     }
                     tbody.innerHTML = rowsHtml;
                 }
             } catch (err) {
-                console.error("Failed to fetch stats:", err);
+                console.error('Failed to fetch stats:', err);
             }
         }
-
-        // Live local streak incrementer
         setInterval(function() {
             if (!isPhoneUnlocked) {
                 currentStreak++;
-                document.getElementById('streakPill').innerText = '⏱️ Focus Streak: ' + formatDuration(currentStreak);
+                document.getElementById('streakPill').innerText = 'Focus Streak: ' + formatDuration(currentStreak);
             }
         }, 1000);
-
-        // Server-Sent Events (SSE) for instant live updates
         var evtSource = new EventSource('/api/events');
-        evtSource.onmessage = function() {
-            fetchStats();
-        };
-
+        evtSource.onmessage = function() { fetchStats(); };
         fetchStats();
     </script>
 </body>
